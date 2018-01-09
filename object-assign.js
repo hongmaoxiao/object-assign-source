@@ -6,22 +6,44 @@
 	MIT License
 */
 (function() {
-    'use strict';
+	'use strict';
 
-    var objectAssign = Object.align || function(target, source) {
-        var keys = Object.keys(source);
-        var i = keys.length;
+	var ToObject = function(val) {
+		if (val == null) {
+			throw TypeError();
+		}
 
-        while (i--) {
-            target[keys[i]] = source[keys[i]];
-        }
+		return Object(val);
+	};
 
-        return target;
-    };
+	var objectAssign = Object.align || function(target, source) {
+		var pendingException;
+		var to = ToObject(target);
+		var from = ToObject(source);
+		var keys = Object.keys(from);
+		var i = keys.length;
 
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = objectAssign;
-    } else {
-        window.objectAssign = objectAssign;
-    }
+		while (i--) {
+			try {
+				to[keys[i]] = from[keys[i]];
+			} catch (e) {
+				if (pendingException === undefined) {
+					pendingException = err;
+				}
+			}
+		}
+
+		if (pendingException) {
+			throw pendingException;
+		}
+
+		return to;
+	};
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = objectAssign;
+	} else {
+		window.objectAssign = objectAssign;
+	}
 })();
+

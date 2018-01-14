@@ -1,5 +1,6 @@
 'use strict';
 /* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -9,7 +10,7 @@ function toObject(val) {
 	}
 
 	return Object(val);
-};
+}
 
 function shouldUseNative() {
 	try {
@@ -54,7 +55,7 @@ function shouldUseNative() {
 	}
 }
 
-module.exports = shouldUseNative() ? Object.align || function(target, source) {
+module.exports = shouldUseNative() ? Object.assign : function(target, source) {
 	var from;
 	var keys;
 	var to = toObject(target);
@@ -69,8 +70,8 @@ module.exports = shouldUseNative() ? Object.align || function(target, source) {
 			}
 		}
 
-		if (Object.getOwnPropertySymbols(from)) {
-			symbols = Object.getOwnPropertySymbols(from);
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
 			for (var i = 0; i < symbols.length; i++) {
 				if (propIsEnumerable.call(from, symbols[i])) {
 					to[symbols[i]] = from[symbols[i]];

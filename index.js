@@ -37,7 +37,7 @@ function shouldUseNative() {
 		for (var i = 0; i < 10; i++) {
 			test2['_' + String.fromCharCode(i)] = i;
 		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function(n) {
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
 			return test2[n];
 		});
 		if (order2.join('') !== '0123456789') {
@@ -46,7 +46,7 @@ function shouldUseNative() {
 
 		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
 		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function(letter) {
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
 			test3[letter] = letter;
 		});
 		if (Object.keys(Object.assign({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
@@ -60,7 +60,7 @@ function shouldUseNative() {
 	}
 }
 
-module.exports = shouldUseNative() ? Object.assign : function(target, source) {
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	var from;
 	var keys;
 	var to = toObject(target);
@@ -83,7 +83,6 @@ module.exports = shouldUseNative() ? Object.assign : function(target, source) {
 				}
 			}
 		}
-
 	}
 
 	return to;
